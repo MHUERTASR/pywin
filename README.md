@@ -80,6 +80,9 @@ docker run -v /ruta/local/wineprefix:/root/.wine -it pywin:latest
 - Si necesitas depurar GUIs, considera ejecutar con un servidor X o exponer DISPLAY; el Dockerfile usa `xvfb-run` para instalaciones silenciosas.
 - `CUPS-PDF` genera archivos PDF en `/root/PDF_OUTPUT`; si no los ves, verifica permisos y que el servicio CUPS esté corriendo.
 
+## Referencias
+- Para más información sobre la configuración de Office y recursos relacionados, revisa: https://github.com/xeden3/docker-office-python-core — la configuración de Office en este `Dockerfile` se basó en ese repositorio.
+
 ## Licencia
 Este repositorio no incluye binarios con licencia; las instalaciones de Office y Python están sujetas a sus respectivas licencias.
 
