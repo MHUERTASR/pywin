@@ -164,26 +164,27 @@ flowchart TB
     D2 --> E1
 
     style MATRIX fill:#0a1929,stroke:#1e3a5f,stroke-width:4px,color:#ffffff
-    style ROW1 fill:#1a1a2e
-    style ROW2 fill:#16213e
-    style ROW3 fill:#0f3460
-    style ROW4 fill:#1e3a5f
-    style ROW5 fill:#2d4a7a
-    style A1 fill:#1e3a5f
-    style A2 fill:#2d4a7a
-    style A3 fill:#3a5a95
-    style B1 fill:#4a6ab0
-    style B2 fill:#5a7ac0
-    style B3 fill:#6a8ad0
-    style C1 fill:#7a9ae0
-    style C2 fill:#8aaaf0
-    style C3 fill:#9abaff
-    style D1 fill:#aacaff
-    style D2 fill:#bbdaff
-    style D3 fill:#cceaff
-    style E1 fill:#ddfaff
-    style E2 fill:#eefaff
-    style E3 fill:#ffffff
+    style ROW1 fill:#1e3a5f,stroke:#3949ab,color:#ffffff
+    style ROW2 fill:#1565c0,stroke:#1976d2,color:#ffffff
+    style ROW3 fill:#1976d2,stroke:#1e88e5,color:#ffffff
+    style ROW4 fill:#1e88e5,stroke:#2196f3,color:#ffffff
+    style ROW5 fill:#2196f3,stroke:#42a5f5,color:#ffffff
+    
+    style A1 fill:#0d47a1,color:#ffffff
+    style A2 fill:#1565c0,color:#ffffff
+    style A3 fill:#1976d2,color:#ffffff
+    style B1 fill:#1e88e5,color:#ffffff
+    style B2 fill:#2196f3,color:#ffffff
+    style B3 fill:#42a5f5,color:#ffffff
+    style C1 fill:#64b5f6,color:#000000
+    style C2 fill:#90caf9,color:#000000
+    style C3 fill:#bbdefb,color:#000000
+    style D1 fill:#e3f2fd,color:#000000
+    style D2 fill:#f3e5f5,color:#000000
+    style D3 fill:#e8eaf6,color:#000000
+    style E1 fill:#fce4ec,color:#000000
+    style E2 fill:#f3e5f5,color:#000000
+    style E3 fill:#e8f5e8,color:#000000
 ```
 
 ### Renderizar el diagrama localmente
