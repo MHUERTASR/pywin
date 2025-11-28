@@ -1,0 +1,42 @@
+flowchart LR
+  subgraph HostEnv[Host / Docker Host]
+    HostNode([Host Machine])
+    DockerEngine([Docker Engine])
+  end
+
+  HostNode -->|docker run| DockerEngine
+
+  subgraph ContainerGroup[Contenedor: pywin]
+    ContainerNode([pywin Container])
+    
+    subgraph WineConfig[Configuración Wine]
+      WinePrefixNode[WINEPREFIX: /root/.wine]
+      WineNode[Wine]
+      WinetricksNode[Winetricks deps<br/>vcrun2019, corefonts, msxml6, gdiplus]
+    end
+    
+    subgraph Apps[Aplicaciones]
+      OfficeNode[Microsoft Office 2010]
+      PythonNode[Python 3.11]
+      PyWin32Node[pywin32 / COM automation]
+      CUPSNode[CUPS-PDF Virtual Printer]
+    end
+    
+    PDFDirNode[/root/PDF_OUTPUT<br/>Volume mount/]
+  end
+
+  DockerEngine --> ContainerNode
+  WinePrefixNode --> WineNode
+  WinetricksNode --> WineNode
+  WineNode --> OfficeNode
+  WineNode --> PythonNode
+  PythonNode --> PyWin32Node
+  PyWin32Node -->|COM/Automation| OfficeNode
+  OfficeNode -->|Print to PDF| CUPSNode
+  CUPSNode -->|Generate PDF| PDFDirNode
+  PDFDirNode -->|Shared Volume| HostNode
+
+  style HostEnv fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
+  style ContainerGroup fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
+  style WineConfig fill:#e8f5e8,stroke:#388e3c,stroke-width:1px
+  style Apps fill:#fff3e0,stroke:#f57c00,stroke-width:1px
