@@ -110,36 +110,47 @@ Este diagrama muestra el flujo de ejecución y los componentes principales: host
 
 ```mermaid
 flowchart LR
-  subgraph HostEnv [Host / Docker Host]
-    Host[Host]
-    Docker[Docker Engine]
+  subgraph HostEnv[Host / Docker Host]
+    HostNode([Host Machine])
+    DockerEngine([Docker Engine])
   end
 
-  Host -->|docker run| Docker
+  HostNode -->|docker run| DockerEngine
 
-  subgraph Container [Contenedor: pywin]
-    Container[pywin Container]
-    wineprefix[(WINEPREFIX:/root/.wine)]
-    Wine[Wine]
-    Winetricks[Winetricks deps\nvcrun2019, corefonts, msxml6, gdiplus]
-    Office[Microsoft Office 2010]
-    Python[Python 3.11]
-    PyWin32[pywin32 / COM automation]
-    CUPS[CUPS-PDF]
-    PDFDir[/root/PDF_OUTPUT (Volume)]
+  subgraph ContainerGroup[Contenedor: pywin]
+    ContainerNode([pywin Container])
+    
+    subgraph WineConfig[Configuración Wine]
+      WinePrefixNode[WINEPREFIX: /root/.wine]
+      WineNode[Wine]
+      WinetricksNode[Winetricks deps<br/>vcrun2019, corefonts, msxml6, gdiplus]
+    end
+    
+    subgraph Apps[Aplicaciones]
+      OfficeNode[Microsoft Office 2010]
+      PythonNode[Python 3.11]
+      PyWin32Node[pywin32 / COM automation]
+      CUPSNode[CUPS-PDF Virtual Printer]
+    end
+    
+    PDFDirNode[/root/PDF_OUTPUT<br/>Volume mount/]
   end
 
-  Docker --> Container
-  Container --> wineprefix
-  Container --> Wine
-  Winetricks --> Wine
-  Wine --> Office
-  Wine --> Python
-  Python --> PyWin32
-  PyWin32 -->|COM/Automation| Office
-  Office -->|Print to virtual printer| CUPS
-  CUPS --> PDFDir
-  PDFDir -->|Volume mount| Host
+  DockerEngine --> ContainerNode
+  WinePrefixNode --> WineNode
+  WinetricksNode --> WineNode
+  WineNode --> OfficeNode
+  WineNode --> PythonNode
+  PythonNode --> PyWin32Node
+  PyWin32Node -->|COM/Automation| OfficeNode
+  OfficeNode -->|Print to PDF| CUPSNode
+  CUPSNode -->|Generate PDF| PDFDirNode
+  PDFDirNode -->|Shared Volume| HostNode
+
+  style HostEnv fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
+  style ContainerGroup fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
+  style WineConfig fill:#e8f5e8,stroke:#388e3c,stroke-width:1px
+  style Apps fill:#fff3e0,stroke:#f57c00,stroke-width:1px
 ```
 
 ### Renderizar el diagrama localmente
