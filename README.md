@@ -106,8 +106,6 @@ Si quieres, puedo: añadir ejemplos de scripts, agregar entradas para `docker-co
 ## Diagrama de arquitectura
 Este diagrama muestra el flujo de ejecución y los componentes principales: host, Docker, contenedor pywin, Wine, Office y Python, y cómo los PDFs generados por CUPS-PDF son volcados en un volumen.
 
-![Diagrama de arquitectura](diagrams/architecture.svg)
-
 ```mermaid
 flowchart LR
   subgraph HostEnv[Host / Docker Host]
