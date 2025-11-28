@@ -107,48 +107,58 @@ Si quieres, puedo: añadir ejemplos de scripts, agregar entradas para `docker-co
 Este diagrama muestra el flujo de ejecución y los componentes principales: host, Docker, contenedor pywin, Wine, Office y Python, y cómo los PDFs generados por CUPS-PDF son volcados en un volumen.
 
 ```mermaid
-flowchart LR
-  subgraph HostEnv[Host / Docker Host]
-    HostNode([Host Machine])
-    DockerEngine([Docker Engine])
-  end
+flowchart TB
+    subgraph DOCKERFILE["PYWIN OFFICE AUTOMATION DOCKERFILE"]
+        
+        subgraph ROW1["Base & Environment"]
+            A1["BASE IMAGE<br/>scottyhardy/docker-wine"]
+            A2["ENV VARS<br/>WINEPREFIX=/root/.wine<br/>WINEARCH=win64"]
+        end
 
-  HostNode -->|docker run| DockerEngine
+        subgraph ROW2["System Setup"]
+            B1["LINUX DEPS<br/>cups, cups-pdf"]
+            B2["CUPS CONFIG<br/>Virtual_PDF printer<br/>Output: /root/PDF_OUTPUT"]
+        end
 
-  subgraph ContainerGroup[Contenedor: pywin]
-    ContainerNode([pywin Container])
-    
-    subgraph WineConfig[Configuración Wine]
-      WinePrefixNode[WINEPREFIX: /root/.wine]
-      WineNode[Wine]
-      WinetricksNode[Winetricks deps<br/>vcrun2019, corefonts, msxml6, gdiplus]
+        subgraph ROW3["Windows Runtime"]
+            C1["WINETRICKS<br/>vcrun2019, corefonts<br/>msxml6, gdiplus"]
+            C2["OFFICE 2010<br/>Win7 compat<br/>Silent install"]
+        end
+
+        subgraph ROW4["Python Stack"]
+            D1["PYTHON 3.11.9<br/>Win10 compat<br/>System path"]
+            D2["PYWIN32 SETUP<br/>COM registration<br/>Excel regserver"]
+        end
+
+        E["RUNTIME<br/>cups service + tail -f"]
     end
-    
-    subgraph Apps[Aplicaciones]
-      OfficeNode[Microsoft Office 2010]
-      PythonNode[Python 3.11]
-      PyWin32Node[pywin32 / COM automation]
-      CUPSNode[CUPS-PDF Virtual Printer]
-    end
-    
-    PDFDirNode[/root/PDF_OUTPUT<br/>Volume mount/]
-  end
 
-  DockerEngine --> ContainerNode
-  WinePrefixNode --> WineNode
-  WinetricksNode --> WineNode
-  WineNode --> OfficeNode
-  WineNode --> PythonNode
-  PythonNode --> PyWin32Node
-  PyWin32Node -->|COM/Automation| OfficeNode
-  OfficeNode -->|Print to PDF| CUPSNode
-  CUPSNode -->|Generate PDF| PDFDirNode
-  PDFDirNode -->|Shared Volume| HostNode
+    A1 --> A2
+    A2 --> B1
+    A2 --> B2
+    B1 --> C1
+    B2 --> C2
+    C1 --> D1
+    C2 --> D1
+    C1 --> D2
+    C2 --> D2
+    D1 --> E
+    D2 --> E
 
-  style HostEnv fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
-  style ContainerGroup fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
-  style WineConfig fill:#e8f5e8,stroke:#388e3c,stroke-width:1px
-  style Apps fill:#fff3e0,stroke:#f57c00,stroke-width:1px
+    style DOCKERFILE fill:#0a1929,stroke:#1e3a5f,stroke-width:3px,color:#ffffff
+    style ROW1 fill:#1a1a2e
+    style ROW2 fill:#16213e
+    style ROW3 fill:#0f3460
+    style ROW4 fill:#1e3a5f
+    style A1 fill:#1e3a5f
+    style A2 fill:#2d4a7a
+    style B1 fill:#3a5a95
+    style B2 fill:#4a6ab0
+    style C1 fill:#5a7ac0
+    style C2 fill:#6a8ad0
+    style D1 fill:#7a9ae0
+    style D2 fill:#8aaaf0
+    style E fill:#9abaff
 ```
 
 ### Renderizar el diagrama localmente
